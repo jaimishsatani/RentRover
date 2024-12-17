@@ -1,0 +1,27 @@
+<% layout("/layouts/boilerplate") %> 
+<body>
+    <h3>All Houses Data</h3>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+      <% for(let listing of allListings) { %>
+          <div class="col">
+              <a href="/listings/<%= listing._id %>" class="listing-link">
+                  <div class="card listing-card">
+                      <img src="<%= listing.image.url%>" class="card-img-top" alt="listing_image" style="height: 20em;">
+                      <div class="card-body">
+                          <p class="card-text"><b><%= listing.title %></b>
+                          <br>
+                          &#x20B9;<%= listing.price ? listing.price.toLocaleString("en-IN") : 'N/A' %> / Month
+                          <br></p>
+                      </div>
+                  </div>
+              </a>
+          </div>
+      <% } %>
+    </div> 
+    <ul>
+      <!-- Uncomment to show the list of titles -->
+      <!-- <% for(let listing of allListings) { %>
+          <li><a href="/listings/<%= listing._id %>"><%= listing.title %></a></li> 
+      <% } %> -->
+    </ul>
+</body>
