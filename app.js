@@ -1,7 +1,4 @@
-if(process.env.NODE_ENV != "production"){
-    require('dotenv').config()
-}
-
+require('dotenv').config(); 
 
 const express = require("express");
 const app = express();
@@ -20,19 +17,18 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter =  require("./routes/user.js");
 
-
-
 const DB_URL = process.env.ATLAS_URL;
 
-main().then(()=>{
-    console.log("DB connected");
-}).catch(()=>{
-    console.log("error");
-})
-
 async function main(){
-  await mongoose.connect(DB_URL);
+  try {
+    await mongoose.connect(DB_URL);
+    console.log("DB connected");
+  } catch (err) {
+    console.log("DB connection error:", err);
+  }
 }
+
+main();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -50,7 +46,8 @@ const sessionoption = {
     cookie : {
         expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge : 7 * 24 * 60 * 60 * 1000,
-        httpOnly : true
+        httpOnly : true,
+        secure: process.env.NODE_ENV === "production"  // Only use 'secure' cookie in production (for HTTPS)
     }
 };
 
@@ -63,7 +60,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 
 app.use((req,res,next) => {
     res.locals.success = req.flash("success");
@@ -81,22 +77,12 @@ app.all("*",(req,res,next)=>{
 })
 
 app.use((err,req,res,next)=>{
-let { statusCode=500 ,message = "Something went wrong!"} = err;
- res.status(statusCode).render("error.ejs",{message});
+    let { statusCode=500 ,message = "Something went wrong!"} = err;
+    res.status(statusCode).render("error.ejs",{message});
 });
-
 
 const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
-
-
-
-
-
-
-
-
-
