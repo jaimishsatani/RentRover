@@ -85,9 +85,14 @@ let { statusCode=500 ,message = "Something went wrong!"} = err;
  res.status(statusCode).render("error.ejs",{message});
 });
 
-app.listen(8000,()=>{
-    console.log("Server is started");
-})
+
+const port = process.env.PORT || 8000;
+
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
+
+
 
 
 

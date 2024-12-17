@@ -5,9 +5,9 @@
   "name": "fwsd-project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "build": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,6 +28,8 @@
     "multer-storage-cloudinary": "^4.0.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^8.0.0"
+    "passport-local-mongoose": "^8.0.0",
+    "dotenv": "^16.0.3",
+    "mongoose": "^7.0.0"
   }
 }
